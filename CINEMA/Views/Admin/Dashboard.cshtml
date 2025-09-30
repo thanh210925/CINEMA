@@ -1,9 +1,113 @@
 ﻿@{
-    Layout = "_AdminLayout";
-    <!-- dùng layout admin riêng -->
+    Layout = "_AdminLayout";  // layout admin riêng
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>Xin chào Admin: @ViewBag.Name</h2>
-<hr />
-<p>Đây là trang quản lý dành cho Admin.</p>
+<div class="container mt-4">
+    <h2 class="mb-4">Xin chào Admin: @ViewBag.Name</h2>
+    <p class="text-muted">Đây là trang quản lý dành cho Admin.</p>
+
+    <div class="row g-4">
+        <!-- Quản lý Phim -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Phim</h5>
+                    <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-primary">Xem Phim</a>
+                    <a asp-controller="Movie" asp-action="Create" class="btn btn-outline-success">Thêm Phim</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Phòng chiếu -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Phòng chiếu</h5>
+                    <a asp-controller="Room" asp-action="Index" class="btn btn-outline-primary">Xem Phòng chiếu</a>
+                    <a asp-controller="Room" asp-action="Create" class="btn btn-outline-success">Thêm Phòng chiếu</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Ghế ngồi -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Ghế ngồi</h5>
+                    <a asp-controller="Seat" asp-action="Index" class="btn btn-outline-primary">Xem Ghế ngồi</a>
+                    <a asp-controller="Seat" asp-action="Create" class="btn btn-outline-success">Thêm Ghế ngồi</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Lịch chiếu -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Lịch chiếu</h5>
+                    <a asp-controller="Schedule" asp-action="Index" class="btn btn-outline-primary">Xem Lịch chiếu</a>
+                    <a asp-controller="Schedule" asp-action="Create" class="btn btn-outline-success">Thêm Lịch chiếu</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Vé -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Vé</h5>
+                    <a asp-controller="Ticket" asp-action="Index" class="btn btn-outline-primary">Xem Vé</a>
+                    <a asp-controller="Ticket" asp-action="Create" class="btn btn-outline-success">Thêm Vé</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Thể loại -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Thể loại</h5>
+                    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary">Xem Thể loại</a>
+                    <a asp-controller="Category" asp-action="Create" class="btn btn-outline-success">Thêm Thể loại</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Bắp nước -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Bắp Nước</h5>
+                    <a asp-controller="Combo" asp-action="Index" class="btn btn-outline-primary">Xem Bắp Nước</a>
+                    <a asp-controller="Combo" asp-action="Create" class="btn btn-outline-success">Thêm Bắp Nước</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quản lý Đơn hàng -->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Quản lý Đơn hàng</h5>
+                    <a asp-controller="Order" asp-action="Index" class="btn btn-outline-primary">Xem Đơn hàng</a>
+                    <a asp-controller="Order" asp-action="Create" class="btn btn-outline-success">Thêm Đơn hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .dashboard-card {
+            transition: all 0.3s ease-in-out;
+        }
+
+            .dashboard-card:hover {
+                background-color: #f8f9fa; /* nền xám nhạt khi hover */
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+    </style>
+}
