@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập Admin";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-danger">Đăng nhập Admin</h2>
+    <hr />
+    <form asp-action="Login" method="post" class="w-50 mx-auto">
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Mật khẩu</label>
+            <input type="password" name="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-danger w-100">Đăng nhập</button>
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <p class="text-danger text-center mt-3">@ViewBag.Error</p>
+    }
+</div>

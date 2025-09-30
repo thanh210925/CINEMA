@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký Admin";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-danger">Đăng ký tài khoản Admin</h2>
+    <hr />
+    <form asp-action="Register" method="post" class="w-50 mx-auto">
+        <div class="mb-3">
+            <label>Họ tên</label>
+            <input type="text" name="fullName" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Mật khẩu</label>
+            <input type="password" name="password" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Số điện thoại</label>
+            <input type="text" name="phone" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-danger w-100">Đăng ký</button>
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <p class="text-danger text-center mt-3">@ViewBag.Error</p>
+    }
+
+    <p class="text-center mt-3">
+        Đã có tài khoản? <a asp-action="Login" asp-controller="Admin">Đăng nhập ngay</a>
+    </p>
+</div>
