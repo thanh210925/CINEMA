@@ -2,63 +2,139 @@
 
 @{
     ViewData["Title"] = "Đăng ký";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml"; // Dùng layout riêng cho form login/register
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2 class="text-center mb-4">Đăng ký tài khoản</h2>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center p-0 position-relative">
+    <!-- Video nền -->
+    <video autoplay muted loop playsinline
+           class="position-absolute top-0 start-0 w-100 h-100"
+           style="object-fit: cover; z-index: -2;">
+        <source src="~/videos/Cinemavideo.mp4" type="video/mp4" />
+        Trình duyệt của bạn không hỗ trợ video.
+    </video>
+
+    <!-- Overlay tối video -->
+    <div class="position-absolute top-0 start-0 w-100 h-100"
+         style="background: rgba(0,0,0,0.4); z-index: -1;"></div>
+
+    <!-- Form đăng ký -->
+    <div class="p-4 rounded shadow text-white"
+         style="background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                width: 400px; max-width: 90%;">
+
+        <h2 class="fw-bold text-center mb-2">Đăng ký tài khoản</h2>
+        <p class="text-center text-light mb-4">Tạo tài khoản để bắt đầu trải nghiệm CINEMA</p>
 
         <form asp-action="Register" method="post">
+            <!-- Họ tên -->
             <div class="mb-3">
                 <label asp-for="FullName" class="form-label">Họ tên</label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-white border-white">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input asp-for="FullName" class="form-control bg-transparent text-white border-white" placeholder="Nguyễn Văn A" />
+                </div>
+                <span asp-validation-for="FullName" class="text-warning"></span>
             </div>
 
+            <!-- Email -->
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">Email</label>
-                <input asp-for="Email" class="form-control" type="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-white border-white">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input asp-for="Email" type="email" class="form-control bg-transparent text-white border-white" placeholder="abc@email.com" />
+                </div>
+                <span asp-validation-for="Email" class="text-warning"></span>
             </div>
 
+            <!-- Số điện thoại -->
             <div class="mb-3">
                 <label asp-for="Phone" class="form-label">Số điện thoại</label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-white border-white">
+                        <i class="bi bi-telephone"></i>
+                    </span>
+                    <input asp-for="Phone" class="form-control bg-transparent text-white border-white" placeholder="0123456789" />
+                </div>
+                <span asp-validation-for="Phone" class="text-warning"></span>
             </div>
 
+            <!-- Ngày sinh -->
             <div class="mb-3">
                 <label asp-for="BirthDate" class="form-label">Ngày sinh</label>
-                <input asp-for="BirthDate" class="form-control" type="date" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                <input asp-for="BirthDate" type="date" class="form-control bg-transparent text-white border-white" />
+                <span asp-validation-for="BirthDate" class="text-warning"></span>
             </div>
 
+            <!-- Giới tính -->
             <div class="mb-3">
                 <label asp-for="Gender" class="form-label">Giới tính</label>
-                <select asp-for="Gender" class="form-control">
+                <select asp-for="Gender" class="form-control bg-transparent text-white border-white">
                     <option value="">-- Chọn giới tính --</option>
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                 </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
+                <span asp-validation-for="Gender" class="text-warning"></span>
             </div>
 
+            <!-- Mật khẩu -->
             <div class="mb-3">
                 <label asp-for="PasswordHash" class="form-label">Mật khẩu</label>
-                <input asp-for="PasswordHash" class="form-control" type="password" required />
-                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-white border-white">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input asp-for="PasswordHash" id="PasswordHash" type="password" class="form-control bg-transparent text-white border-white" placeholder="••••••" required />
+                    <span class="input-group-text bg-transparent text-white border-white" id="togglePassword" style="cursor:pointer;">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </span>
+                </div>
+                <span asp-validation-for="PasswordHash" class="text-warning"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+            <!-- Button -->
+            <button type="submit" class="btn btn-light w-100 py-2 rounded-3">Đăng ký</button>
         </form>
 
+        <!-- Hiển thị lỗi -->
         @if (ViewBag.Error != null)
         {
-            <p class="text-danger text-center mt-3">@ViewBag.Error</p>
+            <p class="text-warning text-center mt-3">@ViewBag.Error</p>
         }
+
+        <div class="text-center mt-3">
+            <small>Đã có tài khoản? <a href="/Customer/Login" class="text-info">Đăng nhập ngay</a></small>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const passwordInput = document.getElementById("PasswordHash");
+            const togglePassword = document.getElementById("togglePassword");
+            const toggleIcon = document.getElementById("toggleIcon");
+
+            togglePassword.addEventListener("click", function () {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+
+                if (type === "password") {
+                    toggleIcon.classList.remove("bi-eye-slash");
+                    toggleIcon.classList.add("bi-eye");
+                } else {
+                    toggleIcon.classList.remove("bi-eye");
+                    toggleIcon.classList.add("bi-eye-slash");
+                }
+            });
+        });
+    </script>
 }
