@@ -1,20 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Trang Quảng Cáo";
+    ViewData["Title"] = "Trang chủ";
 }
-
 <div class="container mt-4">
-    <h2 class="text-center mb-4">🎬 Khuyến mãi hot tại Cinema!</h2>
-
+    <h2 class="text-center mb-4">CineZone – Điểm hẹn điện ảnh của bạn</h2>
     <!-- Banner chạy -->
     <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-
         <!-- Dấu chấm -->
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
             <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>
         </div>
-
         <!-- Ảnh banner -->
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -39,7 +35,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Nút điều hướng -->
         <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
@@ -49,13 +44,11 @@
         </button>
     </div>
 </div>
-
 <!-- CSS cho banner -->
 <style>
     .banner-img {
         height: 400px;
         object-fit: cover;
-
     .carousel-caption h5,
     .carousel-caption p {
         color: #fff;

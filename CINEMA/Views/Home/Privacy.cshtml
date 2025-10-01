@@ -1,6 +1,82 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    Layout = "_Layout";
+    var effective = ViewData["EffectiveDate"] as string ?? "";
+    ViewData["Title"] = "Chính sách bảo mật";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-4">
+    <h1 class="mb-3">@ViewData["Title"]</h1>
+    <p class="text-muted">Ngày hiệu lực: 01/10/2025 @effective</p>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>1. Thông tin chúng tôi thu thập</h5>
+            <ul class="mb-0">
+                <li>Thông tin tài khoản: họ tên, email, số điện thoại.</li>
+                <li>Thông tin giao dịch: lịch sử đặt vé, phương thức thanh toán (không lưu số thẻ).</li>
+                <li>Dữ liệu kỹ thuật: địa chỉ IP, trình duyệt, cookie, log truy cập.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>2. Mục đích sử dụng</h5>
+            <ul class="mb-0">
+                <li>Xử lý đặt vé, chăm sóc khách hàng, gửi thông báo.</li>
+                <li>Cải thiện chất lượng dịch vụ, phòng chống gian lận.</li>
+                <li>Tuân thủ yêu cầu pháp luật khi có yêu cầu hợp lệ.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>3. Cookie & công nghệ tương tự</h5>
+            <p>
+                Chúng tôi dùng cookie để ghi nhớ phiên đăng nhập, tùy chọn người dùng và phân tích lưu lượng.
+                Bé có thể tắt cookie trong trình duyệt, nhưng một số tính năng có thể không hoạt động.
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>4. Chia sẻ thông tin</h5>
+            <p>
+                Chúng tôi chỉ chia sẻ với đối tác cung cấp dịch vụ (ví dụ: cổng thanh toán, nhà cung cấp hạ tầng)
+                theo hợp đồng và tuân thủ bảo mật; hoặc khi pháp luật yêu cầu.
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>5. Lưu trữ & bảo mật</h5>
+            <p>Dữ liệu được lưu trữ an toàn và chỉ giữ trong thời gian cần thiết cho mục đích đã nêu hoặc theo quy định pháp luật.</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>6. Quyền của người dùng</h5>
+            <ul class="mb-0">
+                <li>Yêu cầu truy cập, chỉnh sửa, xóa dữ liệu cá nhân.</li>
+                <li>Rút lại sự đồng ý hoặc phản đối xử lý trong phạm vi pháp luật cho phép.</li>
+                <li>Liên hệ để khiếu nại hoặc hỏi đáp về dữ liệu cá nhân.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>7. Liên hệ</h5>
+            <p>
+                Email: <a href="mailto:support@cinema.example">support@cinema.example</a><br />
+                Điện thoại: 0123 456 789<br />
+                Địa chỉ: 123 Đường ABC, Quận XYZ, TP. HCM
+            </p>
+            <p class="text-muted small mb-0">Cập nhật lần cuối: @effective</p>
+        </div>
+    </div>
+</div>
