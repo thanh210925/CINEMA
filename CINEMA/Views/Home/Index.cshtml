@@ -1,8 +1,57 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">CineZone – Điểm hẹn điện ảnh của bạn</h2>
+    <!-- Banner chạy -->
+    <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <!-- Dấu chấm -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <!-- Ảnh banner -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/images/banner1.jpg" class="d-block w-100 banner-img" alt="Banner 1">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+                    <h5>Mua 1 tặng 1</h5>
+                    <p>Áp dụng cho vé phim 2D vào thứ 3 hàng tuần</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/banner2.jpg" class="d-block w-100 banner-img" alt="Banner 2">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+                    <h5>Combo Bắp + Nước chỉ 49k</h5>
+                    <p>Khuyến mãi khi đặt vé online</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/banner3.jpg" class="d-block w-100 banner-img" alt="Banner 3">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+                    <h5>Suất chiếu đặc biệt</h5>
+                    <p>Xem phim bom tấn sớm hơn 1 ngày</p>
+                </div>
+            </div>
+        </div>
+        <!-- Nút điều hướng -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
 </div>
+<!-- CSS cho banner -->
+<style>
+    .banner-img {
+        height: 400px;
+        object-fit: cover;
+    .carousel-caption h5,
+    .carousel-caption p {
+        color: #fff;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+    }
+</style>
