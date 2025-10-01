@@ -1,0 +1,20 @@
+﻿@model CINEMA.Models.Combo
+@{
+    ViewData["Title"] = "Chi tiết Combo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow rounded-4 border-0 bg-light" style="max-width:500px;">
+        <img src="@Model.ImageUrl" class="card-img-top rounded-top-4" alt="@Model.Name" style="height:250px; object-fit:cover;">
+        <div class="card-body text-center">
+            <h4 class="fw-bold">@Model.Name</h4>
+            <p class="text-muted">@Model.Description</p>
+            <h5 class="fw-bold text-dark">@String.Format("{0:N0} VNĐ", Model.Price ?? 0)</h5>
+        </div>
+        <div class="card-footer text-center bg-white border-0">
+            <a asp-action="Edit" asp-route-id="@Model.ComboId" class="btn btn-dark me-2 rounded-pill shadow-sm">✏ Sửa</a>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill shadow-sm">↩ Quay lại</a>
+        </div>
+    </div>
+</div>

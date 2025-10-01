@@ -1,0 +1,21 @@
+﻿@model CINEMA.Models.Combo
+@{
+    ViewData["Title"] = "Xóa Combo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow p-5 w-50 rounded-4 text-center bg-light">
+        <h2 class="fw-bold mb-4 text-uppercase text-dark">@ViewData["Title"]</h2>
+
+        <p>Bạn có chắc chắn muốn xóa combo <strong>@Model.Name</strong>?</p>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="ComboId" />
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-dark py-2 rounded-pill shadow-sm">🗑 Xóa</button>
+                <a asp-action="Index" class="btn btn-outline-secondary py-2 rounded-pill shadow-sm">↩ Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model CINEMA.Models.Combo
+@{
+    ViewData["Title"] = "Thêm Combo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow p-5 w-50 rounded-4 border-0 bg-light">
+        <h2 class="fw-bold mb-4 text-center text-uppercase">@ViewData["Title"]</h2>
+
+        <form asp-action="Create">
+            <div class="mb-3">
+                <label class="form-label">Tên Combo</label>
+                <input asp-for="Name" class="form-control rounded-3 shadow-sm" placeholder="Combo bắp + nước" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control rounded-3 shadow-sm" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Giá (VNĐ)</label>
+                <input asp-for="Price" type="number" class="form-control rounded-3 shadow-sm" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Link ảnh</label>
+                <input asp-for="ImageUrl" class="form-control rounded-3 shadow-sm" />
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-dark py-2 rounded-pill shadow-sm">💾 Lưu</button>
+                <a asp-action="Index" class="btn btn-outline-secondary py-2 rounded-pill shadow-sm">↩ Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
