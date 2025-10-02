@@ -1,0 +1,13 @@
+﻿@model CINEMA.Models.Movie
+
+<h3>Bạn có chắc chắn muốn xóa phim này không?</h3>
+<div>
+    <h4>@Model.Title</h4>
+    <p>@Model.Description</p>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="MovieId" />
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

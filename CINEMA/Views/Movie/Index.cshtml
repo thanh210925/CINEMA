@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CINEMA.Models.Movie>
+@{
+    ViewData["Title"] = "Quản lý phim";
+    Layout = "_AdminLayout";
+}
+
+<div class="movie-header mb-4 p-3 bg-dark text-white rounded">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold">🎬 Quản lý phim</h2>
+        <a class="btn btn-success" asp-action="Create">➕ Thêm phim mới</a>
+    </div>
+</div>
+
+<div class="table-responsive bg-white shadow rounded p-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Tên phim</th>
+                <th>Thời lượng</th>
+                <th>Ngày khởi chiếu</th>
+                <th>Quốc gia</th>
+                <th>Ngôn ngữ</th>
+                <th>Giới hạn tuổi</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var m in Model)
+                {
+                    <tr>
+                        <td>#@m.MovieId</td>
+                        <td>@m.Title</td>
+                        <td>@(m.Duration.HasValue? m.Duration + " phút" : "-")</td>
+                        <td>@(m.ReleaseDate.HasValue? m.ReleaseDate.Value.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")</td>
+                        <td>@m.Country</td>
+                        <td>@m.Language</td>
+                        <td>@m.AgeRating</td>
+                        <td>
+                            @if (m.IsActive == true)
+                            {
+                                <span class="badge bg-success">Đang chiếu</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Ngưng chiếu</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@m.MovieId">Xem</a>
+                            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@m.MovieId">Sửa</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@m.MovieId">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center text-muted">📭 Chưa có phim nào</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

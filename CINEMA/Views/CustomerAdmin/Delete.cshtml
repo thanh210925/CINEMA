@@ -1,0 +1,17 @@
+﻿@model CINEMA.Models.Customer
+@{
+    ViewData["Title"] = "Xóa khách hàng";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-bold text-danger mb-4">⚠️ Xóa khách hàng</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa khách hàng <b>@Model.FullName</b> (Email: @Model.Email)?
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="CustomerId" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

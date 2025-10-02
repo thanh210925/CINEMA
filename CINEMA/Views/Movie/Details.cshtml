@@ -1,0 +1,25 @@
+﻿@model CINEMA.Models.Movie
+@{
+    ViewData["Title"] = "Chi tiết phim";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-bold mb-4">🎬 Chi tiết phim</h2>
+
+<div class="card p-4 shadow-sm">
+    <p><b>ID:</b> @Model.MovieId</p>
+    <p><b>Tên phim:</b> @Model.Title</p>
+    <p><b>Thời lượng:</b> @(Model.Duration.HasValue? Model.Duration + " phút" : "-")</p>
+    <p><b>Ngày khởi chiếu:</b> @(Model.ReleaseDate.HasValue? Model.ReleaseDate.Value.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture) : "-")</p>
+    <p><b>Quốc gia:</b> @Model.Country</p>
+    <p><b>Ngôn ngữ:</b> @Model.Language</p>
+    <p><b>Giới hạn tuổi:</b> @Model.AgeRating</p>
+    <p><b>Trạng thái:</b> @(Model.IsActive == true ? "Đang chiếu" : "Ngưng chiếu")</p>
+    <p><b>Mô tả:</b> @Model.Description</p>
+    @if (!string.IsNullOrEmpty(Model.PosterUrl))
+    {
+        <img src="@Model.PosterUrl" alt="@Model.Title" style="max-width:200px;" />
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Quay lại</a>

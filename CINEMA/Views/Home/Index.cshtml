@@ -1,8 +1,11 @@
-﻿@{
+﻿@model IEnumerable<CINEMA.Models.Movie>
+@{
     ViewData["Title"] = "Trang chủ";
 }
+
 <div class="container mt-4">
     <h2 class="text-center mb-4">CineZone – Điểm hẹn điện ảnh của bạn</h2>
+
     <!-- Banner chạy -->
     <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <!-- Dấu chấm -->
@@ -11,6 +14,7 @@
             <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>
         </div>
+
         <!-- Ảnh banner -->
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -35,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Nút điều hướng -->
         <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
@@ -44,11 +49,47 @@
         </button>
     </div>
 </div>
-<!-- CSS cho banner -->
+
+<!-- PHIM ĐANG CHIẾU -->
+<div class="container mt-5">
+    <h2 class="fw-bold text-center mb-4">🎬 PHIM ĐANG CHIẾU</h2>
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var movie in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="@movie.PosterUrl" class="card-img-top" alt="@movie.Title"
+                             style="height: 350px; object-fit: cover;" />
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">@movie.Title</h5>
+                            <p class="text-muted small">
+                                @movie.AgeRating | @movie.Duration phút
+                            </p>
+                            <a asp-controller="Home" asp-action="BookTicket" asp-route-id="@movie.MovieId"
+                               class="btn btn-warning fw-bold w-100">
+                                🎟 Đặt vé ngay
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center text-muted">Hiện chưa có phim nào đang chiếu.</p>
+        }
+    </div>
+</div>
+
+<!-- CSS -->
 <style>
     .banner-img {
         height: 400px;
         object-fit: cover;
+    }
+
     .carousel-caption h5,
     .carousel-caption p {
         color: #fff;

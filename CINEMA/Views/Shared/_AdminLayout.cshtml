@@ -7,18 +7,35 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
+
+    <style>
+        html, body {
+            height: 100%; /* full chiều cao */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1; /* chiếm toàn bộ không gian còn lại */
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
+    <!-- Navbar -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Dashboard">CineZone Admin</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Admin" asp-action="Dashboard">CineZone Admin</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin"
                         aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarAdmin">
+                    <!-- Left menu -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
@@ -27,21 +44,22 @@
                             <a class="nav-link" asp-controller="Movie" asp-action="Index">Quản lý phim</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Customer" asp-action="Index">Quản lý khách hàng</a>
+                            <a class="nav-link" asp-controller="CustomerAdmin" asp-action="Index">Quản lý khách hàng</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Combo" asp-action="Index">Quản lý bắp nước</a>
                         </li>
                     </ul>
 
+                    <!-- Right menu -->
                     <ul class="navbar-nav ms-auto">
                         @if (Context.Session.GetString("Role") == "Admin")
                         {
                             <li class="nav-item">
-                                <span class="nav-link">Admin: @Context.Session.GetString("Name")</span>
+                                <span class="nav-link text-white-50">👤 Admin: <b>@Context.Session.GetString("Name")</b></span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-danger" asp-controller="Admin" asp-action="Logout">Đăng xuất</a>
+                                <a class="nav-link text-danger fw-bold" asp-controller="Admin" asp-action="Logout">Đăng xuất</a>
                             </li>
                         }
                     </ul>
@@ -50,12 +68,14 @@
         </nav>
     </header>
 
-    <div class="container mt-4">
+    <!-- Main content -->
+    <main class="container-fluid py-4">
         @RenderBody()
-    </div>
+    </main>
 
-    <footer class="border-top footer text-muted text-center mt-4">
-        <div class="container">
+    <!-- Footer luôn dưới cùng -->
+    <footer class="border-top footer text-muted text-center py-3 bg-white shadow-sm">
+        <div class="container-fluid">
             &copy; 2025 - CINEMA Admin
         </div>
     </footer>

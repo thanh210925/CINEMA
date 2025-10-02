@@ -1,0 +1,20 @@
+﻿@model CINEMA.Models.Customer
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-bold mb-4">👤 Thông tin khách hàng</h2>
+
+<div class="card p-3 shadow-sm">
+    <p><b>ID:</b> @Model.CustomerId</p>
+    <p><b>Họ tên:</b> @Model.FullName</p>
+    <p><b>Email:</b> @Model.Email</p>
+    <p><b>SĐT:</b> @Model.Phone</p>
+    <p><b>Giới tính:</b> @Model.Gender</p>
+    <p><b>Ngày sinh:</b> @Model.BirthDate?.ToString("dd/MM/yyyy")</p>
+    <p><b>Ngày tạo:</b> @Model.CreatedAt?.ToString("dd/MM/yyyy")</p>
+    <p><b>Đăng nhập cuối:</b> @Model.LastLogin?.ToString("dd/MM/yyyy HH:mm")</p>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Quay lại</a>

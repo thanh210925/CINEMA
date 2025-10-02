@@ -1,0 +1,51 @@
+﻿@model CINEMA.Models.Movie
+@{
+    ViewData["Title"] = "Thêm phim";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-bold mb-4">➕ Thêm phim mới</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên phim</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Thời lượng (phút)</label>
+        <input asp-for="Duration" type="number" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ngày khởi chiếu</label>
+        <input asp-for="ReleaseDate" type="date" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Quốc gia</label>
+        <input asp-for="Country" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ngôn ngữ</label>
+        <input asp-for="Language" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Giới hạn tuổi</label>
+        <input asp-for="AgeRating" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Trạng thái</label>
+        <select asp-for="IsActive" class="form-control">
+            <option value="true">Đang chiếu</option>
+            <option value="false">Ngưng chiếu</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Poster URL</label>
+        <input asp-for="PosterUrl" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

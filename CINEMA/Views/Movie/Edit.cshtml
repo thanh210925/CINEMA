@@ -1,0 +1,69 @@
+﻿@model CINEMA.Models.Movie
+@{
+    ViewData["Title"] = "Sửa phim";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-bold mb-4">✏️ Sửa thông tin phim</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="MovieId" />
+
+    <div class="mb-3">
+        <label class="form-label">Tên phim</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Thời lượng (phút)</label>
+        <input asp-for="Duration" type="number" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ngày khởi chiếu</label>
+        <input asp-for="ReleaseDate" type="date" class="form-control"
+               value="@(Model.ReleaseDate.HasValue? Model.ReleaseDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) : "")" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Quốc gia</label>
+        <input asp-for="Country" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ngôn ngữ</label>
+        <input asp-for="Language" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Giới hạn tuổi</label>
+        <input asp-for="AgeRating" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Trạng thái</label>
+        <select asp-for="IsActive" class="form-control">
+            <option value="true" selected="@(Model.IsActive == true)">Đang chiếu</option>
+            <option value="false" selected="@(Model.IsActive == false)">Ngưng chiếu</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Poster URL</label>
+        <input asp-for="PosterUrl" class="form-control" />
+        @if (!string.IsNullOrEmpty(Model.PosterUrl))
+        {
+            <div class="mt-2">
+                <img src="@Model.PosterUrl" alt="@Model.Title" style="max-height:150px;" />
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

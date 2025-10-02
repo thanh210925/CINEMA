@@ -14,10 +14,21 @@
     <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CINEMA.styles.css" asp-append-version="true" />
+
+    <style>
+        body {
+            padding-top: 70px; /* Đẩy nội dung xuống dưới navbar */
+        }
+
+        footer {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow fixed-top">
             <div class="container">
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-film"></i> CineZone
@@ -77,12 +88,14 @@
         </nav>
     </header>
 
+    <!-- Nội dung chính -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
+    <!-- Footer -->
     <footer class="border-top footer text-muted">
         <div class="container text-center py-3">
             &copy; 2025 - CineZone - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
