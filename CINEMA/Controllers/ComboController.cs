@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CINEMA.Models;
 
@@ -18,79 +17,92 @@ namespace CINEMA.Controllers
             _context = context;
         }
 
-        // GET: Combo
-        public async Task<IActionResult> Index()
+        // 🧱 Hàm kiểm tra trạng thái đăng nhập admin
+        private bool IsAdminLoggedIn()
         {
-            return View(await _context.Combos.ToListAsync());
+            return HttpContext.Session.GetString("Role") == "Admin";
         }
 
-        // GET: Combo/Details/5
+        // ---------------- INDEX ----------------
+        public async Task<IActionResult> Index()
+        {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            var combos = await _context.Combos.ToListAsync();
+            return View(combos);
+        }
+
+        // ---------------- DETAILS ----------------
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
 
-            var combo = await _context.Combos
-                .FirstOrDefaultAsync(m => m.ComboId == id);
-            if (combo == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
+
+            var combo = await _context.Combos.FirstOrDefaultAsync(m => m.ComboId == id);
+            if (combo == null)
+                return NotFound();
 
             return View(combo);
         }
 
-        // GET: Combo/Create
+        // ---------------- CREATE ----------------
+        [HttpGet]
         public IActionResult Create()
         {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
             return View();
         }
 
-        // POST: Combo/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ComboId,Name,Description,Price,ImageUrl,IsActive")] Combo combo)
         {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
             if (ModelState.IsValid)
             {
                 _context.Add(combo);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "✅ Thêm combo thành công!";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(combo);
         }
 
-        // GET: Combo/Edit/5
+        // ---------------- EDIT ----------------
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var combo = await _context.Combos.FindAsync(id);
             if (combo == null)
-            {
                 return NotFound();
-            }
+
             return View(combo);
         }
 
-        // POST: Combo/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ComboId,Name,Description,Price,ImageUrl,IsActive")] Combo combo)
         {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
             if (id != combo.ComboId)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -98,56 +110,57 @@ namespace CINEMA.Controllers
                 {
                     _context.Update(combo);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "✅ Cập nhật combo thành công!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ComboExists(combo.ComboId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(combo);
         }
 
-        // GET: Combo/Delete/5
+        // ---------------- DELETE ----------------
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
 
-            var combo = await _context.Combos
-                .FirstOrDefaultAsync(m => m.ComboId == id);
-            if (combo == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
+
+            var combo = await _context.Combos.FirstOrDefaultAsync(m => m.ComboId == id);
+            if (combo == null)
+                return NotFound();
 
             return View(combo);
         }
 
-        // POST: Combo/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
             var combo = await _context.Combos.FindAsync(id);
             if (combo != null)
             {
                 _context.Combos.Remove(combo);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "🗑 Xóa combo thành công!";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // ---------------- CHECK EXIST ----------------
         private bool ComboExists(int id)
         {
             return _context.Combos.Any(e => e.ComboId == id);

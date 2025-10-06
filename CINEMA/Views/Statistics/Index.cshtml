@@ -1,0 +1,127 @@
+﻿@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Thống kê hệ thống";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold" style="color: #ec4899;">📊 Thống kê hệ thống</h1>
+        <p class="text-muted fs-5">Tổng quan hoạt động rạp chiếu phim</p>
+    </div>
+
+    <!-- Thẻ thống kê -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card pink">
+                <div class="card-body text-center text-white">
+                    <h6>Đơn hàng</h6>
+                    <h2>@(ViewBag.OrderCount ?? 0)</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card purple">
+                <div class="card-body text-center text-white">
+                    <h6>Vé bán</h6>
+                    <h2>@(ViewBag.TicketCount ?? 0)</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card teal">
+                <div class="card-body text-center text-white">
+                    <h6>Doanh thu</h6>
+                    <h2>@String.Format("{0:N0} VNĐ", ViewBag.TotalRevenue ?? 0)</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card yellow">
+                <div class="card-body text-center text-white">
+                    <h6>Số Combo bán</h6>
+                    <h2>@(ViewBag.ComboCount ?? 0)</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3 text-secondary">📈 Doanh thu 7 ngày gần nhất</h5>
+            <canvas id="revenueChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Labels ?? new[] { "T2", "T3", "T4", "T5", "T6", "T7", "CN" })),
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Data ?? new[] { 500000, 700000, 800000, 650000, 900000, 1200000, 1000000 })),
+                    borderWidth: 3,
+                    borderColor: '#ec4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#ec4899'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#6b7280' }
+                    },
+                    x: {
+                        ticks: { color: '#6b7280' }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .stat-card {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.pink {
+            background: linear-gradient(135deg, #ec4899, #f9a8d4);
+        }
+        .stat-card.purple {
+            background: linear-gradient(135deg, #8b5cf6, #c4b5fd);
+        }
+        .stat-card.teal {
+            background: linear-gradient(135deg, #14b8a6, #5eead4);
+        }
+        .stat-card.yellow {
+            background: linear-gradient(135deg, #f59e0b, #facc15);
+        }
+
+        h2 {
+            font-weight: 700;
+        }
+    </style>
+}
+    

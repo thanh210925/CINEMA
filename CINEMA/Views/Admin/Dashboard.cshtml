@@ -123,6 +123,19 @@
                 </div>
             </div>
         </div>
+        <!-- --- Ô Thống kê (mới) --- -->
+        <div class="col-md-4">
+            <div class="card dashboard-card pink">
+                <div class="card-body text-center text-white">
+                    <div class="icon">📈</div>
+                    <h5 class="card-title ">Thống kê</h5>
+                    <div class="btn-group-custom ">
+                        <a asp-controller="Statistics" asp-action="Index" class="btn btn-light">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -197,6 +210,10 @@
 
         .dashboard-card.teal .card-body {
             background: linear-gradient(135deg, #059669, #34d399);
+        }
+
+        .dashboard-card.pink .card-body {
+            background: linear-gradient(135deg, #ec4899, #f472b6, #f9a8d4);
         }
     </style>
 }
