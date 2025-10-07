@@ -1,0 +1,73 @@
+@model CINEMA.Models.Room
+
+@{
+    var room = Model ?? new CINEMA.Models.Room();
+    bool isEdit = room.RoomId != 0;
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header @(isEdit ? "bg-warning text-dark" : "bg-success text-white") fw-semibold">
+        <i class="bi @(isEdit ? "bi-pencil-square" : "bi-plus-circle")"></i>
+        @(isEdit ? "Cập nhật thông tin phòng chiếu" : "Thêm phòng chiếu mới")
+    </div>
+
+    <div class="card-body">
+        <form asp-action="@(isEdit ? "Edit" : "Create")" method="post" class="needs-validation" novalidate>
+            @if(isEdit)
+            {
+                <input type="hidden" asp-for="RoomId" />
+            }
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-semibold">Tên phòng chiếu</label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên phòng..." value="@room.Name" required />
+                <div class="invalid-feedback">Vui lòng nhập tên phòng chiếu.</div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Capacity" class="form-label fw-semibold">Sức chứa</label>
+                <input asp-for="Capacity" type="number" class="form-control" placeholder="Nhập sức chứa..." value="@room.Capacity" required />
+                <div class="invalid-feedback">Vui lòng nhập sức chứa.</div>
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label fw-semibold">Loại phòng chiếu</label>
+                <input asp-for="Type" class="form-control" placeholder="VD: 2D, 3D, IMAX..." value="@room.Type" required />
+                <div class="invalid-feedback">Vui lòng nhập loại phòng chiếu.</div>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn @(isEdit ? "btn-warning" : "btn-success")">
+                    <i class="bi @(isEdit ? "bi-save" : "bi-plus-lg")"></i> @(isEdit ? "Cập nhật" : "Thêm mới")
+                </button>
+                <a class="btn btn-outline-secondary" href="/Room/Index">
+                    <i class="bi bi-arrow-left-circle"></i> Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Bootstrap validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

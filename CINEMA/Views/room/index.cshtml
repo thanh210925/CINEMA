@@ -1,0 +1,109 @@
+@model IEnumerable<CINEMA.Models.Room>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Quản lý phòng chiếu";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary mb-0">@ViewData["Title"]</h2>
+        <a class="btn btn-success shadow-sm" href="/Room/Create">
+            <i class="bi bi-plus-circle"></i> Thêm phòng chiếu mới
+        </a>
+    </div>
+
+    <!-- Bộ lọc loại phòng -->
+    <div class="mb-3 d-flex align-items-center gap-2">
+        <label for="filterRoomType" class="fw-semibold">Lọc theo loại phòng:</label>
+        <select id="filterRoomType" class="form-select" style="width:200px;">
+            <option value="all">Tất cả</option>
+            <option value="VIP">VIP</option>
+            <option value="IMAX">IMAX</option>
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="4DX">4DX</option>
+        </select>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table id="roomTable" class="table table-hover align-middle text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên phòng chiếu</th>
+                        <th>Sức chứa</th>
+                        <th>Loại phòng chiếu</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-muted">Chưa có phòng chiếu nào 🥲</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var room in Model)
+                        {
+                            <tr data-type="@room.Type">
+                                <td><span class="badge bg-secondary">@room.RoomId</span></td>
+                                <td class="fw-semibold">@room.Name</td>
+                                <td>@room.Capacity người</td>
+                                <td>
+                                    @if (room.Type?.ToLower().Contains("vip") == true)
+                                    {
+                                        <span class="badge bg-danger">VIP</span>
+                                    }
+                                    else if (room.Type?.ToLower().Contains("imax") == true)
+                                    {
+                                        <span class="badge bg-info text-dark">IMAX</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">@room.Type</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                    
+                                        <a class="btn btn-sm btn-warning text-white" href="/Room/Edit/@room.RoomId">
+                                            <i class="bi bi-pencil-square"></i> Sửa
+                                        </a>
+                                        <a class="btn btn-sm btn-danger" href="/Room/Delete/@room.RoomId"
+                                           onclick="return confirm('Bạn chắc chắn muốn xoá phòng này chứ? 😢');">
+                                            <i class="bi bi-trash"></i> Xoá
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const filterSelect = document.getElementById("filterRoomType");
+        const rows = document.querySelectorAll("#roomTable tbody tr[data-type]");
+
+        filterSelect.addEventListener("change", () => {
+            const selected = filterSelect.value.toLowerCase();
+
+            rows.forEach(row => {
+                const type = (row.getAttribute("data-type") || "").toLowerCase();
+                if (selected === "all" || type.includes(selected)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
+}
