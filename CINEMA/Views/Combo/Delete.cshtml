@@ -1,21 +1,77 @@
 ﻿@model CINEMA.Models.Combo
 @{
-    ViewData["Title"] = "Xóa Combo";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Xóa Combo";
 }
 
-<div class="container py-5 d-flex justify-content-center">
-    <div class="card shadow p-5 w-50 rounded-4 text-center bg-light">
-        <h2 class="fw-bold mb-4 text-uppercase text-dark">@ViewData["Title"]</h2>
+<style>
+    body {
+        background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        <p>Bạn có chắc chắn muốn xóa combo <strong>@Model.Name</strong>?</p>
+    .confirm-card {
+        background: white;
+        border-radius: 14px;
+        padding: 2rem;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 10vh auto;
+        text-align: center;
+    }
 
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="ComboId" />
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-dark py-2 rounded-pill shadow-sm">🗑 Xóa</button>
-                <a asp-action="Index" class="btn btn-outline-secondary py-2 rounded-pill shadow-sm">↩ Quay lại</a>
-            </div>
-        </form>
-    </div>
+    h2 {
+        color: #3a2e00;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    p {
+        color: #4b3b00;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem 1.6rem;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+
+    .btn-delete:hover {
+        background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(183, 28, 28, 0.3);
+    }
+
+    .btn-back {
+        background: white;
+        color: #3a2e00;
+        border: 1.5px solid rgba(75, 59, 0, 0.25);
+        border-radius: 10px;
+        padding: 0.7rem 1.4rem;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+
+    .btn-back:hover {
+        background: #fff3cd;
+        border-color: #f1c40f;
+        box-shadow: 0 4px 10px rgba(241, 196, 15, 0.2);
+    }
+</style>
+
+<div class="confirm-card">
+    <h2>Xóa Combo</h2>
+    <p>Bạn có chắc chắn muốn xóa combo <strong>@Model.Name</strong> không?</p>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="ComboId" />
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button type="submit" class="btn-delete">🗑 Xóa</button>
+            <a asp-action="Index" class="btn-back">↩ Quay lại</a>
+        </div>
+    </form>
 </div>

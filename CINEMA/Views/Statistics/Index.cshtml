@@ -1,0 +1,172 @@
+﻿@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Thống kê hệ thống";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold" style="background: linear-gradient(135deg, #ec4899, #f472b6, #f9a8d4);
+                                               -webkit-background-clip: text;
+                                               -webkit-text-fill-color: transparent;">
+        @ViewBag.ChartTitle
+    </h2>
+
+    <!-- Bộ lọc -->
+    <form method="get" class="d-flex justify-content-center mb-4 gap-2 flex-wrap filter-form">
+        <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control w-auto" />
+        <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control w-auto" />
+        <select name="type" class="form-select w-auto">
+            <option value="revenue" selected="@((string)ViewBag.SelectedType == "revenue")">Doanh thu   </option>
+            <option value="ticket" selected="@((string)ViewBag.SelectedType == "ticket")">Vé bán   </option>
+            <option value="combo" selected="@((string)ViewBag.SelectedType == "combo")">Combo bán   </option>
+        </select>
+        <button type="submit" class="btn btn-gradient">Thống kê</button>
+    </form>
+
+    <!-- Tổng quan -->
+    <div class="text-center mb-5">
+        <div class="row g-3 justify-content-center">
+            <div class="col-md-3">
+                <div class="p-3 stat-card">
+                    📦 Đơn hàng: <b>@ViewBag.OrderCount</b>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 stat-card">
+                    🎫 Vé: <b>@ViewBag.TicketCount</b>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 stat-card">
+                    🍿 Combo: <b>@ViewBag.ComboCount</b>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 stat-card">
+                    💰 Doanh thu: <b>@String.Format("{0:N0} VNĐ", ViewBag.TotalRevenue)</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="card shadow-sm mb-5 border-0">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3 text-pink">📈 Biểu đồ @ViewBag.ChartTitle</h5>
+            <canvas id="mainChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <!-- Top phim bán chạy -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header fw-bold text-white"
+             style="background: linear-gradient(135deg, #ec4899, #f472b6, #f9a8d4);">
+            🎬 Top 5 phim bán chạy
+        </div>
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead style="background: linear-gradient(135deg, #ec4899, #f472b6, #f9a8d4); color: white;">
+                    <tr>
+                        <th>Phim</th>
+                        <th>Số vé bán</th>
+                        <th>Doanh thu (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var movie in ViewBag.TopMovies)
+                    {
+                        <tr>
+                            <td>@movie.MovieName</td>
+                            <td>@movie.TicketCount</td>
+                            <td>@String.Format("{0:N0}", movie.Revenue)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.Labels)),
+                datasets: [{
+                    label: '@ViewBag.ChartTitle',
+                    data: @Html.Raw(Json.Serialize(ViewBag.Data)),
+                    fill: true,
+                    backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                    borderColor: '#ec4899',
+                    borderWidth: 3,
+                    tension: 0.35,
+                    pointBackgroundColor: '#ec4899'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3, #fbcfe8);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #ec4899, #f472b6, #f9a8d4);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+            .btn-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(236, 72, 153, 0.3);
+            }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(236, 72, 153, 0.15);
+            transition: all 0.2s;
+        }
+
+            .stat-card:hover {
+                transform: scale(1.03);
+                box-shadow: 0 6px 15px rgba(236, 72, 153, 0.25);
+            }
+
+        .text-pink {
+            color: #ec4899;
+        }
+
+        .filter-form input,
+        .filter-form select {
+            border: 2px solid #f9a8d4;
+            border-radius: 8px;
+            padding: 0.4rem 0.7rem;
+        }
+
+            .filter-form input:focus,
+            .filter-form select:focus {
+                border-color: #ec4899;
+                box-shadow: 0 0 0 0.2rem rgba(236, 72, 153, 0.2);
+            }
+
+        table tbody tr:hover {
+            background-color: #fdf2f8;
+        }
+    </style>
+}

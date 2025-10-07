@@ -1,20 +1,85 @@
 ﻿@model CINEMA.Models.Combo
 @{
-    ViewData["Title"] = "Chi tiết Combo";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết Combo";
 }
 
-<div class="container py-5 d-flex justify-content-center">
-    <div class="card shadow rounded-4 border-0 bg-light" style="max-width:500px;">
-        <img src="@Model.ImageUrl" class="card-img-top rounded-top-4" alt="@Model.Name" style="height:250px; object-fit:cover;">
-        <div class="card-body text-center">
-            <h4 class="fw-bold">@Model.Name</h4>
-            <p class="text-muted">@Model.Description</p>
-            <h5 class="fw-bold text-dark">@String.Format("{0:N0} VNĐ", Model.Price ?? 0)</h5>
-        </div>
-        <div class="card-footer text-center bg-white border-0">
-            <a asp-action="Edit" asp-route-id="@Model.ComboId" class="btn btn-dark me-2 rounded-pill shadow-sm">✏ Sửa</a>
-            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill shadow-sm">↩ Quay lại</a>
-        </div>
+<style>
+    body {
+        background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .details-card {
+        background: white;
+        border-radius: 14px;
+        padding: 2rem;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 10vh auto;
+    }
+
+    h2 {
+        color: #3a2e00;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .combo-info {
+        color: #2f2300;
+        line-height: 1.7;
+    }
+
+        .combo-info span {
+            font-weight: 600;
+        }
+
+    .combo-image {
+        display: block;
+        max-width: 250px;
+        margin: 1.5rem auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(245, 181, 68, 0.25);
+    }
+
+    .btn-back {
+        display: block;
+        width: fit-content;
+        margin: 2rem auto 0;
+        background: linear-gradient(135deg, #3a2e00 0%, #5b4605 100%);
+        color: #fff8e1;
+        border-radius: 8px;
+        padding: 0.7rem 1.6rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(135deg, #5b4605 0%, #3a2e00 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        }
+</style>
+
+<div class="details-card">
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="combo-info">
+        <p><span>Tên Combo:</span> @Model.Name</p>
+        <p><span>Mô tả:</span> @Model.Description</p>
+        <p><span>Giá:</span> @String.Format("{0:N0} VNĐ", @Model.Price)</p>
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="Combo Image" class="combo-image" />
+        }
+        else
+        {
+            <p class="text-muted text-center">Không có ảnh</p>
+        }
     </div>
+
+    <a asp-action="Index" class="btn-back">↩ Quay lại</a>
 </div>

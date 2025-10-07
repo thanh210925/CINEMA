@@ -1,52 +1,277 @@
 ﻿@model IEnumerable<CINEMA.Models.Combo>
 @{
-    ViewData["Title"] = "Quản lý Bắp Nước";
+    ViewData["Title"] = "Quản lý Combo Bắp Nước";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-uppercase border-bottom pb-2">@ViewData["Title"]</h2>
-        <a asp-action="Create" class="btn btn-dark shadow-sm rounded-pill px-4">
-            <i class="bi bi-plus-circle"></i> Thêm Combo
-        </a>
-    </div>
+<style>
+    /* Header */
+    .combo-header {
+        background: linear-gradient(135deg, #f5b544 0%, #f8d87d 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        color: #4b3b00;
+        box-shadow: 0 4px 8px rgba(245, 181, 68, 0.3);
+    }
 
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm h-100 border-0 rounded-4 combo-card bg-light">
-                    <img src="@item.ImageUrl" class="card-img-top rounded-top-4" alt="@item.Name" style="height:220px; object-fit:cover;">
-                    <div class="card-body">
-                        <h5 class="fw-bold">@item.Name</h5>
-                        <p class="text-muted">@item.Description</p>
-                        <h6 class="fw-bold text-dark">@String.Format("{0:N0} VNĐ", item.Price ?? 0)</h6>
-                    </div>
-                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@item.ComboId" class="btn btn-outline-dark btn-sm rounded-pill">
-                            <i class="bi bi-pencil"></i> Sửa
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.ComboId" class="btn btn-outline-secondary btn-sm rounded-pill">
-                            <i class="bi bi-eye"></i> Xem
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.ComboId" class="btn btn-outline-dark btn-sm rounded-pill">
-                            <i class="bi bi-trash"></i> Xóa
-                        </a>
-                    </div>
-                </div>
-            </div>
+    /* Search */
+    .search-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
+
+    .search-input {
+        border: 2px solid #f0e0a0;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #f5b544;
+        box-shadow: 0 0 0 0.2rem rgba(245, 181, 68, 0.25);
+    }
+
+    /* Table */
+    .combo-table {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        width: 100%;
+    }
+
+    .combo-table thead {
+        background: linear-gradient(135deg, #f5b544 0%, #f8d87d 100%);
+        color: #4b3b00;
+    }
+
+    .combo-table thead th {
+        padding: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .combo-table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .combo-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .combo-table tbody tr:hover {
+        background-color: #fff8e1;
+        transform: scale(1.01);
+        box-shadow: 0 2px 8px rgba(245, 181, 68, 0.1);
+    }
+
+    /* Buttons */
+    .action-buttons .btn {
+        margin: 0 0.2rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-view {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background: #138496;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-edit:hover {
+        background: #e0a800;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c82333;
+    }
+
+    /* Nút Thêm combo: viền mảnh, nhẹ, tinh tế */
+    .btn-add-combo {
+        background: linear-gradient(135deg, #f5b544 0%, #f8d87d 100%);
+        color: #4b3b00; /* chữ tối để đọc tốt trên nền vàng */
+        padding: 0.7rem 1.4rem;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.06); /* viền mảnh, hơi tối để tạo ranh giới nhẹ */
+        box-shadow: 0 6px 18px rgba(245, 181, 68, 0.10), /* bóng mềm phía ngoài */
+        inset 0 -2px 0 rgba(255, 255, 255, 0.10); /* ánh sáng phía trên cho cảm giác nổi */
+        font-weight: 600;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+        /* Hover: nhẹ nhàng nổi lên, viền đậm chút, vẫn mềm mại */
+        .btn-add-combo:hover,
+        .btn-add-combo:focus {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #f8d87d 0%, #f5b544 100%); /* đảo nhẹ gradient */
+            border-color: rgba(0, 0, 0, 0.10);
+            box-shadow: 0 10px 26px rgba(245, 181, 68, 0.14), inset 0 -2px 0 rgba(255, 255, 255, 0.12);
+            outline: none;
         }
+
+        /* Trạng thái keyboard focus (tăng khả năng truy cập) */
+        .btn-add-combo:focus-visible {
+            box-shadow: 0 10px 26px rgba(245, 181, 68, 0.14), 0 0 0 4px rgba(245, 181, 68, 0.12);
+        }
+
+
+
+    /* Image */
+    .combo-img {
+        width: 100px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+</style>
+
+<!-- Header -->
+<div class="combo-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="mb-2 fw-bold">🍿 Quản lý combo bắp nước</h2>
+            <p class="mb-0 opacity-75">Theo dõi, chỉnh sửa và quản lý các combo bán tại rạp</p>
+        </div>
+        <a class="btn-add-combo" asp-action="Create">
+            <i class="bi bi-plus-circle me-2"></i>Thêm combo mới
+        </a>
     </div>
 </div>
 
-<style>
-    .combo-card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+<!-- Tìm kiếm -->
+<div class="search-box">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <input type="text" id="searchInput" class="form-control search-input"
+                   placeholder="🔍 Tìm kiếm theo tên hoặc mô tả combo..." onkeyup="searchCombos()">
+        </div>
+        <div class="col-md-4 text-end">
+            <span class="text-muted">Tổng số: <strong id="totalCombos">@(Model?.Count() ?? 0)</strong> combo</span>
+        </div>
+    </div>
+</div>
 
-        .combo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-</style>
+<!-- Bảng combo -->
+<div class="combo-table">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0" id="comboTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên combo</th>
+                    <th>Mô tả</th>
+                    <th>Giá</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+                    foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(c.ImageUrl))
+                                {
+                                    <img src="@c.ImageUrl" alt="@c.Name" class="combo-img" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Không có ảnh</span>
+                                }
+                            </td>
+                            <td class="fw-semibold">@c.Name</td>
+                            <td class="text-muted">@c.Description</td>
+                            <td class="fw-bold text-warning">@String.Format("{0:N0} VNĐ", c.Price)</td>
+                            <td class="text-center">
+                                <div class="action-buttons">
+                                    <a class="btn btn-view btn-sm" asp-action="Details" asp-route-id="@c.ComboId">👁 Xem</a>
+                                    <a class="btn btn-edit btn-sm" asp-action="Edit" asp-route-id="@c.ComboId">✏️ Sửa</a>
+                                    <a class="btn btn-delete btn-sm" asp-action="Delete" asp-route-id="@c.ComboId"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa combo này?')">🗑 Xóa</a>
+                                </div>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🍿</div>
+                                <h5>Chưa có combo nào</h5>
+                                <p class="text-muted">Hãy thêm combo đầu tiên của bạn để bắt đầu bán!</p>
+                                <a class="btn-add-combo" asp-action="Create">
+                                    <i class="bi bi-plus-circle me-2"></i>Thêm combo
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function searchCombos() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('#comboTable tbody tr');
+        let count = 0;
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            if (text.includes(input)) {
+                row.style.display = '';
+                count++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('totalCombos').textContent = count;
+    }
+</script>
