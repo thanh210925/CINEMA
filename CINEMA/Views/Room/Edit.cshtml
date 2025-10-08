@@ -1,0 +1,62 @@
+﻿@model CINEMA.Models.Auditorium
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Chỉnh sửa Phòng chiếu";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header text-white fw-bold"
+             style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+            ✏️ Chỉnh sửa thông tin Phòng chiếu
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="AuditoriumId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Tên phòng</label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Rạp chiếu</label>
+                    <select asp-for="TheaterId" class="form-select"
+                            asp-items="@(new SelectList((IEnumerable<CINEMA.Models.Theater>)ViewData["Theaters"], "TheaterId", "Name", Model.TheaterId))">
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Số hàng ghế</label>
+                        <input asp-for="SeatRows" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Số cột ghế</label>
+                        <input asp-for="SeatCols" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Loại màn hình</label>
+                    <input asp-for="ScreenType" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select asp-for="IsActive" class="form-control">
+                        <option value="true" selected="@(Model.IsActive == true)">Đang chiếu</option>
+                        <option value="false" selected="@(Model.IsActive == false)">Ngưng chiếu</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn text-white fw-bold"
+                        style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+                    💾 Cập nhật
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">↩ Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

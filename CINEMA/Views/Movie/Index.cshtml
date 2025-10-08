@@ -40,14 +40,9 @@
                         <td>@m.Language</td>
                         <td>@m.AgeRating</td>
                         <td>
-                            @if (m.IsActive == true)
-                            {
-                                <span class="badge bg-success">Đang chiếu</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">Ngưng chiếu</span>
-                            }
+                            <span class="badge @(m.IsActive == true ? "bg-success" : "bg-danger")">
+                                @(m.IsActive == true ? "Hoạt động" : "Ngừng")
+                            </span>
                         </td>
                         <td>
                             <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@m.MovieId">Xem</a>

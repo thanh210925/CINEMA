@@ -1,0 +1,75 @@
+﻿@model CINEMA.Models.Auditorium
+@{
+    ViewData["Title"] = "Thêm Phòng chiếu";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header text-white fw-bold"
+             style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+            ➕ Thêm Phòng chiếu mới
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Tên phòng</label>
+                    <input asp-for="Name" class="form-control" placeholder="Nhập tên phòng..." />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Rạp chiếu</label>
+                    <select asp-for="TheaterId"
+                            asp-items="@(new SelectList(ViewBag.Theaters ?? new List<object>(), "TheaterId", "Name"))"
+                            class="form-select">
+                        <option value="">-- Chọn rạp chiếu --</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Số hàng ghế</label>
+                        <input asp-for="SeatRows" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Số cột ghế</label>
+                        <input asp-for="SeatCols" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Loại màn hình</label>
+                    <input asp-for="ScreenType" class="form-control" placeholder="Ví dụ: 2D, 3D, IMAX..." />
+                </div>
+
+                <!-- Trạng thái bằng radio (an toàn khi Model null) -->
+                <div class="mb-3">
+                    <label class="form-label d-block">Trạng thái</label>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="IsActive" id="isActiveTrue" value="true"
+                        @((Model?.IsActive ?? true) ? "checked" : "") />
+                        <label class="form-check-label" for="isActiveTrue">Đang chiếu</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="IsActive" id="isActiveFalse" value="false"
+                        @((Model?.IsActive ?? true) ? "" : "checked") />
+                        <label class="form-check-label" for="isActiveFalse">Ngưng chiếu</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn text-white fw-bold"
+                        style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+                    💾 Lưu
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">↩ Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

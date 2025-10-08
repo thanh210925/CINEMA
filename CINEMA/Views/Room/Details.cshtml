@@ -1,0 +1,42 @@
+﻿@model CINEMA.Models.Auditorium
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Chi tiết Phòng chiếu";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header text-white fw-bold"
+             style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+            🔍 Chi tiết Phòng chiếu
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Tên phòng</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Rạp chiếu</dt>
+                <dd class="col-sm-9">@Model.Theater?.Name</dd>
+
+                <dt class="col-sm-3">Số hàng ghế</dt>
+                <dd class="col-sm-9">@Model.SeatRows</dd>
+
+                <dt class="col-sm-3">Số cột ghế</dt>
+                <dd class="col-sm-9">@Model.SeatCols</dd>
+
+                <dt class="col-sm-3">Loại màn hình</dt>
+                <dd class="col-sm-9">@Model.ScreenType</dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @(Model.IsActive == true ? "bg-success" : "bg-secondary")">
+                        @(Model.IsActive == true ? "Hoạt động" : "Ngừng")
+                    </span>
+                </dd>
+            </dl>
+
+            <a asp-action="Edit" asp-route-id="@Model.AuditoriumId" class="btn btn-warning text-white">✏️ Sửa</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">↩ Quay lại</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,237 @@
+﻿@model IEnumerable<CINEMA.Models.Auditorium>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Quản lý Phòng chiếu";
+}
+
+<style>
+    /* Header */
+    .page-header {
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        color: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+        .page-header h2 {
+            font-weight: 700;
+        }
+
+    .btn-add {
+        background: white;
+        color: #0891b2;
+        font-weight: 600;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+    }
+
+        .btn-add:hover {
+            background: #e0f2fe;
+            transform: translateY(-2px);
+        }
+
+    /* Search */
+    .search-box {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+        .search-box input {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+            .search-box input:focus {
+                border-color: #06b6d4;
+                box-shadow: 0 0 0 3px rgba(6,182,212,0.2);
+                outline: none;
+            }
+
+    /* Table */
+    .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    table thead {
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        color: white;
+    }
+
+        table thead th {
+            padding: 1rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+    table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    table tbody tr:hover {
+        background-color: #f0f9ff;
+        transition: 0.3s;
+    }
+
+    /* Buttons */
+    .btn-action {
+        border: none;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: 0.2s;
+        color: white;
+    }
+
+    .btn-view {
+        background: #0ea5e9;
+    }
+
+        .btn-view:hover {
+            background: #0284c7;
+        }
+
+    .btn-edit {
+        background: #facc15;
+        color: #111827;
+    }
+
+        .btn-edit:hover {
+            background: #eab308;
+            color: black;
+        }
+
+    .btn-delete {
+        background: #ef4444;
+    }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+    /* Empty state */
+    .empty {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+    }
+
+        .empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .btn-action {
+    text-decoration: none !important;
+}
+
+.btn-action:hover {
+    text-decoration: none !important;
+}
+</style>
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h2>🏛️ Quản lý Phòng chiếu</h2>
+        <p class="opacity-75 mb-0">Theo dõi, chỉnh sửa và quản lý danh sách các phòng chiếu trong rạp</p>
+    </div>
+    <a asp-action="Create" class="btn-add">Thêm phòng chiếu mới</a>
+</div>
+
+<div class="search-box d-flex align-items-center gap-3">
+    <i class="bi bi-search fs-4 text-muted"></i>
+    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm theo tên phòng, loại màn hình..." onkeyup="searchAuditoriums()">
+    <div class="ms-auto text-muted">
+        Tổng số: <b id="total">@Model.Count()</b> phòng chiếu
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="table table-hover align-middle text-center mb-0" id="auditoriumTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Phòng</th>
+                <th>Rạp</th>
+                <th>Số Hàng</th>
+                <th>Số Cột</th>
+                <th>Loại Màn Hình</th>
+                <th>Trạng Thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var a in Model)
+                {
+                    <tr>
+                        <td>#@a.AuditoriumId</td>
+                        <td>@a.Name</td>
+                        <td>@a.Theater?.Name</td>
+                        <td>@a.SeatRows</td>
+                        <td>@a.SeatCols</td>
+                        <td>@a.ScreenType</td>
+                        <td>
+                            <span class="badge @(a.IsActive == true ? "bg-success" : "bg-danger")">
+                                @(a.IsActive == true ? "Hoạt động" : "Ngừng")
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@a.AuditoriumId" class="btn-action btn-view me-1">👁 Xem</a>
+                            <a asp-action="Edit" asp-route-id="@a.AuditoriumId" class="btn-action btn-edit me-1">✏️ Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@a.AuditoriumId" class="btn-action btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa phòng này?')">🗑 Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">
+                        <div class="empty">
+                            <i class="bi bi-building"></i>
+                            <h5>Chưa có phòng chiếu nào</h5>
+                            <p>Hãy thêm phòng chiếu đầu tiên của bạn.</p>
+                            <a asp-action="Create" class="btn-add">Thêm phòng chiếu</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function searchAuditoriums() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('#auditoriumTable tbody tr');
+        let count = 0;
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            if (text.includes(input)) {
+                row.style.display = '';
+                count++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('total').textContent = count;
+    }
+</script>
