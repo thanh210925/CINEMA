@@ -1,0 +1,16 @@
+@model CINEMA.Models.Auditorium
+@{
+    ViewData["Title"] = "Xóa Phòng chiếu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h3>🗑 Xóa phòng chiếu</h3>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa phòng: <b>@Model.Name</b> ?
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="AuditoriumId" />
+    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

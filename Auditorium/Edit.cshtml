@@ -1,0 +1,52 @@
+@model CINEMA.Models.Auditorium
+@{
+    ViewData["Title"] = "Sửa Phòng chiếu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-warning text-white rounded-top-4">
+            <h3 class="mb-0 text-center">✏️ Sửa thông tin Phòng chiếu</h3>
+        </div>
+        <div class="card-body p-4">
+
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="AuditoriumId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tên phòng</label>
+                    <input asp-for="Name" class="form-control form-control-lg" placeholder="Nhập tên phòng..." />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Số hàng ghế</label>
+                        <input asp-for="SeatRows" type="number" class="form-control" placeholder="VD: 10" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Số cột ghế</label>
+                        <input asp-for="SeatCols" type="number" class="form-control" placeholder="VD: 12" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Loại màn hình</label>
+                    <input asp-for="ScreenType" class="form-control" placeholder="VD: IMAX, 3D, 4DX..." />
+                </div>
+
+                <div class="form-check form-switch mb-4">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" />
+                    <label class="form-check-label fw-semibold">Phòng đang hoạt động</label>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a asp-action="Index" class="btn btn-secondary px-4">⬅️ Quay lại</a>
+                    <button type="submit" class="btn btn-warning text-white px-4 fw-semibold">💾 Cập nhật</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
