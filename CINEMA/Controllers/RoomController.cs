@@ -1,70 +1,158 @@
+﻿using CINEMA.Models;
 using Microsoft.AspNetCore.Mvc;
-using CINEMA.Models;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CINEMA.Controllers
 {
     public class RoomController : Controller
     {
         private readonly CinemaContext _context;
+
         public RoomController(CinemaContext context)
         {
             _context = context;
         }
 
-        // Hiển thị danh sách phòng
-        public IActionResult Index()
+        // 🔐 Kiểm tra đăng nhập admin
+        private bool IsAdminLoggedIn()
         {
-            var rooms = _context.Rooms.ToList();
+            return HttpContext.Session.GetString("Role") == "Admin";
+        }
+
+        // 📋 Danh sách phòng chiếu
+        public async Task<IActionResult> Index()
+        {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            var rooms = await _context.Auditoriums
+                .Include(r => r.Theater)
+                .ToListAsync();
             return View(rooms);
         }
 
-        // Thêm mới
-        public IActionResult Create() => View();
+        // 🔍 Chi tiết
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            if (id == null)
+                return NotFound();
+
+            var room = await _context.Auditoriums
+                .Include(r => r.Theater)
+                .FirstOrDefaultAsync(m => m.AuditoriumId == id);
+
+            if (room == null)
+                return NotFound();
+
+            return View(room);
+        }
+
+        // ➕ Tạo mới
+        public IActionResult Create()
+        {
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            ViewBag.Theaters = _context.Theaters?.ToList() ?? new List<Theater>();
+            var model = new Auditorium { IsActive = true }; // mặc định đang hoạt động
+            return View(model);
+        }
 
         [HttpPost]
-        public IActionResult Create(Room room)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Auditorium room)
         {
             if (ModelState.IsValid)
             {
-                _context.Rooms.Add(room);
-                _context.SaveChanges();
+                _context.Add(room);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Theaters = _context.Theaters?.ToList() ?? new List<Theater>();
             return View(room);
         }
 
-        // Sửa
-        public IActionResult Edit(int id)
+
+        // ✏️ Chỉnh sửa
+        public async Task<IActionResult> Edit(int? id)
         {
-            var room = _context.Rooms.Find(id);
-            if (room == null) return NotFound();
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            if (id == null)
+                return NotFound();
+
+            var room = await _context.Auditoriums.FindAsync(id);
+            if (room == null)
+                return NotFound();
+
+            ViewData["Theaters"] = _context.Theaters.ToList();
             return View(room);
         }
 
         [HttpPost]
-        public IActionResult Edit(Room room)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Auditorium room)
         {
+            if (id != room.AuditoriumId)
+                return NotFound();
+
             if (ModelState.IsValid)
             {
-                _context.Rooms.Update(room);
-                _context.SaveChanges();
+                try
+                {
+                    _context.Update(room);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Auditoriums.Any(e => e.AuditoriumId == room.AuditoriumId))
+                        return NotFound();
+                    else
+                        throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Theaters"] = _context.Theaters.ToList();
             return View(room);
         }
 
-        // Xoá
-        public IActionResult Delete(int id)
+        // 🗑️ Xóa
+        // GET: Room/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            var room = _context.Rooms.Find(id);
-            if (room == null) return NotFound();
-            _context.Rooms.Remove(room);
-            _context.SaveChanges();
+            if (!IsAdminLoggedIn())
+                return RedirectToAction("Login", "Admin");
+
+            if (id == null)
+                return NotFound();
+
+            var room = await _context.Auditoriums
+                .Include(r => r.Theater)
+                .FirstOrDefaultAsync(m => m.AuditoriumId == id);
+
+            if (room == null)
+                return NotFound();
+
+            return View(room);
+        }
+
+        // POST: Room/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var room = await _context.Auditoriums.FindAsync(id);
+            if (room != null)
+            {
+                _context.Auditoriums.Remove(room);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
-       
 
     }
-
 }

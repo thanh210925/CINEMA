@@ -67,7 +67,7 @@
     <h2>Xóa Combo</h2>
     <p>Bạn có chắc chắn muốn xóa combo <strong>@Model.Name</strong> không?</p>
 
-    <form asp-action="DeleteConfirmed" method="post">
+    <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="ComboId" />
         <div class="d-flex justify-content-center gap-3 mt-4">
             <button type="submit" class="btn-delete">🗑 Xóa</button>

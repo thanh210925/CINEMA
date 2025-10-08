@@ -1,0 +1,22 @@
+﻿@model CINEMA.Models.Auditorium
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Xóa Phòng chiếu";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header text-white fw-bold"
+             style="background:linear-gradient(135deg,#0891b2,#06b6d4);">
+            ⚠️ Xóa Phòng chiếu
+        </div>
+        <div class="card-body text-center">
+            <p class="fs-5">Bạn có chắc chắn muốn xóa phòng <b>@Model.Name</b> không?</p>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="AuditoriumId" />
+                <button type="submit" class="btn btn-danger px-4">🗑️ Xóa</button>
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">↩ Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
